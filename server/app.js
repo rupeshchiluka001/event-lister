@@ -21,6 +21,10 @@ app.use('/api/events', eventRoutes);
 
 app.use(express.static( path.join(__dirname, '..', 'views', 'build') ));
 
+app.get('*', function(req, res) {
+    res.sendFile('index.html', {root: path.join(__dirname, '..', 'views', 'build') });
+  });
+
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}...`);
 });
