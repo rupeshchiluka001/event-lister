@@ -6,7 +6,6 @@ const eventRoutes = require('./routes/eventRoutes');
 const cors = require('cors');
 require('dotenv').config();
 require('./config/database');
-require('./config/generateKeypair')();
 
 const PORT = process.env.PORT || 3080;
 const app = express();

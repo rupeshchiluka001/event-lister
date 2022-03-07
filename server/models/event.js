@@ -7,10 +7,11 @@ const EventSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    eventOrganizer: {
+    eventOrganizerId: {
         type: mongoose.Schema.Types.ObjectId,
-        refPath: 'Event'
-    }
+        refPath: 'User'
+    },
+    eventOrganizerName: String
 });
 
 module.exports = mongoose.model('Event', EventSchema);

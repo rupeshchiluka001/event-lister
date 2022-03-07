@@ -24,14 +24,10 @@ function issueJWT(id, hash) {
 async function verifyJWT(signedJWT) {
     try {
         let payload = await jsonwebtoken.verify(signedJWT, PUB_KEY, {algorithm: 'RS256'});
-        // actual verification
+        
         const user = await User.findById(payload.data).exec();
 
-        if (Date.now() < payload.iat) {
-            return false;
-        }
-
-        return validatePassword(user.password, payload.id, user.salt);
+        return (Date.now() <= payload.iat && user && payload.id === user.hash);
     } catch (err) {
         console.log(err);
         return false;

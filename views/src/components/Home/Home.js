@@ -4,12 +4,10 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import svgLogo from './timeline-events.svg';
-import Navbar from '../Navbar/Navbar';
 
 export default function Home() {
     return (
         <>
-        <Navbar />
         <Box
         sx={{
             display: 'flex',

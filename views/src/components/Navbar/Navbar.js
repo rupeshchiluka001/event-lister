@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export default function BasicMenu() {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
+    const apiUrl = `${process.env.REACT_APP_API_URL}/api`;
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -20,7 +22,28 @@ export default function BasicMenu() {
 
     const signout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('id');
         navigate('/');
+    };
+
+    const deleteUser = async () => {
+        
+        const id = localStorage.getItem('id');
+        const token = localStorage.getItem('token');
+
+        if (id && token) {
+            try {
+                const response = await axios.get(`${apiUrl}/delete-user?token=${token}&id=${id}`);
+
+                alert(response.data.msg);
+                signout();
+            } catch (err) {
+                alert(err.response.data.msg);
+            }
+        }
+        else {
+            alert("Please login first:)");
+        }
     };
 
     const divStyle = {
@@ -51,8 +74,11 @@ export default function BasicMenu() {
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <MenuItem>
-                    <span onClick={signout}>Signout</span>
+                <MenuItem onClick={signout}>
+                    <span>Signout</span>
+                </MenuItem>
+                <MenuItem onClick={deleteUser}>
+                    <span>Delete My Account</span>
                 </MenuItem>
             </Menu>
         </div>

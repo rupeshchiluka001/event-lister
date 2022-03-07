@@ -1,4 +1,4 @@
-import React, { useState, useHis } from "react";
+import React, { useState } from "react";
 import axios from 'axios'
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function Form(props) {
 
-    const [usernameValid, setUsernameValid] = useState(true);
     const [emailValid, setEmailValid] = useState(true);
     const [passwordValid, setPasswordValid] = useState(true);
     const [dialog, setDialog] = useState(null);
@@ -19,7 +18,7 @@ export default function Form(props) {
     const navigate = useNavigate();
 
     const registerUser = async (formData) => {
-        if (!usernameValid || !emailValid || !passwordValid) {
+        if (!emailValid || !passwordValid) {
             return;
         }
         try {
@@ -30,16 +29,12 @@ export default function Form(props) {
             });
 
             alert(response.data.msg);
+            navigate('/login');
         } catch (err) {
-            alert(`Error:-\n${err}`);
+            alert(err.response.data.msg);
+            navigate('/');
         }
-
-        navigate('/');
     }
-
-    const usernameHandle = (event) => {
-        setUsernameValid(event.currentTarget.value.match(/^[a-z0-9]+$/i) ? true : false);
-    };
 
     const emailHandle = (event) => {
         setEmailValid(event.currentTarget.value.match(/^[a-z0-9]{2,}@[a-z0-9]{2,}\.[a-z0-9]{2,}$/i) ? true : false);
@@ -81,8 +76,6 @@ export default function Form(props) {
                                         label="Username"
                                         autoFocus
                                         helperText={"only alphabets, numbers"}
-                                        onChange={usernameHandle}
-                                        error={!usernameValid}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
